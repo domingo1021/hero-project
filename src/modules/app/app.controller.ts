@@ -1,5 +1,6 @@
-import { CustomErrorCodes } from '#src/cores/types';
 import { Controller, Get, All, NotFoundException } from '@nestjs/common';
+
+import { CustomErrorCodes } from '#cores/types';
 
 @Controller()
 export class AppController {
