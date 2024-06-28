@@ -52,4 +52,28 @@ export class ExternalHttpService {
       ),
     );
   }
+
+  async getHeroById(id: string): Promise<Hero> {
+    return firstValueFrom(
+      this.httpService.get(`${this.EXTERNAL_ENDPOINT.GET_HEROES}/${id}`).pipe(
+        map((response) => response.data),
+        map((hero) => {
+          if (!this.isHero(hero)) {
+            throw new InternalServerErrorException({
+              code: INTERNAL_STATUS_CODE.THIRDPARTY_API_RESPONSE_MISMATCH,
+              message: `Invalid response format from upstream ${this.EXTERNAL_ENDPOINT.GET_HEROES}/${id}`,
+            });
+          }
+
+          return hero;
+        }),
+        catchError((error: AxiosError) => {
+          throw new InternalServerErrorException({
+            code: INTERNAL_STATUS_CODE.THIRDPARTY_SERVER_ERROR,
+            message: error.message,
+          });
+        }),
+      ),
+    );
+  }
 }
