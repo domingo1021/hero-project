@@ -20,6 +20,8 @@
     "paths": {
       "#src/*": ["./src/*"],
       "#app/*": ["./src/modules/app/*"],
+      "#hero/*": ["./src/modules/hero/*"],
+      "#http/*": ["./src/modules/http/*"],
       "#cores/*": ["./src/cores/*"],
     }
   }
