@@ -5,7 +5,7 @@ import { firstValueFrom } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
 import { Hero } from '#hero/dto';
-import { INTERNAL_STATUS_CODE } from '#src/cores/constants';
+import { INTERNAL_STATUS_CODE } from '#cores/constants';
 
 @Injectable()
 export class ExternalHttpService {
@@ -24,6 +24,11 @@ export class ExternalHttpService {
     );
   }
 
+  /**
+   * @description Get heroes from external api
+   * @returns {Promise<Array<Hero>>}
+   * @throws {InternalServerErrorException}
+   */
   async getHeroes(): Promise<Array<Hero>> {
     return firstValueFrom(
       this.httpService.get(this.EXTERNAL_ENDPOINT.GET_HEROES).pipe(

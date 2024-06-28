@@ -7,6 +7,12 @@ import { GetHerosResponseDto } from '#hero/dto';
 export class HeroController {
   constructor(private readonly heroService: HeroService) {}
 
+  /**
+   * @description Fetches all heroes from the service layer, maps them to the GetHerosResponseDto format,
+   * @route GET /heroes
+   * @returns {Promise<GetHerosResponseDto>}
+   * @throws {InternalServerErrorException}
+   */
   @Get('heroes')
   async getHeroes(): Promise<GetHerosResponseDto> {
     const heroes = await this.heroService.findAll();
