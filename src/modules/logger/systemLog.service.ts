@@ -2,6 +2,11 @@ import * as winston from 'winston';
 import { LoggerService } from '@nestjs/common';
 import { BaseLog } from './type/baseLog';
 
+/**
+ * @description System log implement Nest LoggerService, it will log all server related system logs.
+ *
+ * @example 2024-06-28T08:45:20.332Z [info] [SYSTEM_LOG] Nest application successfully started ["NestApplication"]
+ */
 export class SystemLog extends BaseLog implements LoggerService {
   private readonly requestId: string = 'SYSTEM_LOG';
   protected readonly logger: winston.Logger;

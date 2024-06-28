@@ -10,6 +10,10 @@ import { Response } from 'express';
 import { InternalRequest, CustomErrorCodes, ErrorResponse } from '#cores/types';
 import { CustomLog } from '#logger/appLog.service';
 
+/**
+ * @description AllExceptionsFilter is a filter to catch all exceptions and return a proper response.
+ * If error response interface is not determined, it will treat it as Internal Server Error.
+ */
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {
   constructor(private readonly logger: CustomLog) {}

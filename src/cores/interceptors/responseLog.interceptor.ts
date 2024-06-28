@@ -12,8 +12,8 @@ import { InternalRequest } from '#cores/types';
 import { CustomLog } from '#logger/appLog.service';
 
 /**
- * LogInterceptor is a interceptor to help track request and response logs.
- * If endpoint is blacklisted, it will not log the request and response.
+ * @description LogInterceptor is a interceptor to help track request and response logs.
+ * If endpoint is blacklisted, take k8s health check endpoint for example, it will not log the request and response.
  */
 @Injectable()
 export class LogInterceptor implements NestInterceptor {

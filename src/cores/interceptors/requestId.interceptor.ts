@@ -8,6 +8,10 @@ import { Observable } from 'rxjs';
 import { v4 as uuidv4 } from 'uuid';
 import { InternalRequest } from '../types';
 
+/**
+ * @description RequestIdInterceptor is a interceptor to help generate request id.
+ * It will be place at the beginning of the request and store the request id in the request locals.
+ */
 @Injectable()
 export class RequestIdInterceptor implements NestInterceptor {
   constructor() {}

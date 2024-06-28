@@ -14,6 +14,3 @@ const WinstonProvider: Provider = {
   exports: [CustomLog],
 })
 export class LoggerModule {}
-
-// RequestId workaround: https://gist.github.com/bengry/924a9b93c25d8a98bffdfc0a847f0dbe
-// res.locals --> workaround with req.locals.requestId https://github.com/nestjs/nest/issues/913
