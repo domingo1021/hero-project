@@ -5,7 +5,7 @@ import { firstValueFrom } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
 import { Hero } from '#hero/dto';
-import { INTERNAL_STATUS_CODE } from '#cores/constants';
+import { CustomErrorCodes } from '#cores/types';
 
 @Injectable()
 export class ExternalHttpService {
@@ -36,7 +36,7 @@ export class ExternalHttpService {
         map((heroes) => {
           if (!Array.isArray(heroes) || !heroes.every(this.isHero)) {
             throw new InternalServerErrorException({
-              code: INTERNAL_STATUS_CODE.THIRDPARTY_API_RESPONSE_MISMATCH,
+              code: CustomErrorCodes.THIRDPARTY_API_RESPONSE_MISMATCH,
               message: `Invalid response format from upstream ${this.EXTERNAL_ENDPOINT.GET_HEROES}`,
             });
           }
@@ -45,7 +45,7 @@ export class ExternalHttpService {
         }),
         catchError((error: AxiosError) => {
           throw new InternalServerErrorException({
-            code: INTERNAL_STATUS_CODE.THIRDPARTY_SERVER_ERROR,
+            code: CustomErrorCodes.THIRDPARTY_SERVER_ERROR,
             message: error.message,
           });
         }),
@@ -60,7 +60,7 @@ export class ExternalHttpService {
         map((hero) => {
           if (!this.isHero(hero)) {
             throw new InternalServerErrorException({
-              code: INTERNAL_STATUS_CODE.THIRDPARTY_API_RESPONSE_MISMATCH,
+              code: CustomErrorCodes.THIRDPARTY_API_RESPONSE_MISMATCH,
               message: `Invalid response format from upstream ${this.EXTERNAL_ENDPOINT.GET_HEROES}/${id}`,
             });
           }
@@ -69,7 +69,7 @@ export class ExternalHttpService {
         }),
         catchError((error: AxiosError) => {
           throw new InternalServerErrorException({
-            code: INTERNAL_STATUS_CODE.THIRDPARTY_SERVER_ERROR,
+            code: CustomErrorCodes.THIRDPARTY_SERVER_ERROR,
             message: error.message,
           });
         }),

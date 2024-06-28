@@ -1,6 +1,5 @@
+import { CustomErrorCodes } from '#src/cores/types';
 import { Controller, Get, All, NotFoundException } from '@nestjs/common';
-
-import { INTERNAL_STATUS_CODE } from '#cores/constants';
 
 @Controller()
 export class AppController {
@@ -16,7 +15,7 @@ export class AppController {
     const NOT_FOUND_MSG = 'Resource not found';
 
     throw new NotFoundException({
-      code: INTERNAL_STATUS_CODE.NOT_FOUND,
+      code: CustomErrorCodes.NOT_FOUND,
       message: NOT_FOUND_MSG,
     });
   }
