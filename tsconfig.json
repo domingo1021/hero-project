@@ -24,6 +24,7 @@
       "#http/*": ["./src/modules/http/*"],
       "#logger/*": ["./src/modules/logger/*"],
       "#cores/*": ["./src/cores/*"],
+      "#test/*": ["./test/*"],
     }
   }
 }
