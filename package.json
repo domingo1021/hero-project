@@ -78,6 +78,7 @@
       "^#hero/(.*$)": "<rootDir>/src/modules/hero/$1",
       "^#http/(.*$)": "<rootDir>/src/modules/http/$1",
       "^#logger/(.*$)": "<rootDir>/src/modules/logger/$1",
+      "^#auth/(.*$)": "<rootDir>/src/modules/auth/$1",
       "^#cores/(.*$)": "<rootDir>/src/cores/$1"
     },
     "moduleFileExtensions": [
