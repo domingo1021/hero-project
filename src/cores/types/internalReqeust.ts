@@ -1,5 +1,9 @@
 import { Request } from 'express';
 
+export interface LocalUser {
+  isAuthenticated: boolean;
+}
+
 /**
  * Nest official doesn't recommend to use res.locals, use req.locals instead.
  *
@@ -10,6 +14,7 @@ export interface InternalRequest extends Request {
     [key: string]: any;
     requestId: string;
   };
+  user: LocalUser;
 }
 
 declare module 'express' {
