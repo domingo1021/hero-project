@@ -63,7 +63,9 @@
   "jest": {
     "moduleNameMapper": {
       "^#src/(.*$)": "<rootDir>/src/$1",
-      "^#test/(.*$)": "<rootDir>/test/$1"
+      "^#test/(.*$)": "<rootDir>/test/$1",
+      "^#app/(.*$)": "<rootDir>/src/modules/app/$1",
+      "^#cores/(.*$)": "<rootDir>/src/cores/$1"
     },
     "moduleFileExtensions": [
       "js",
