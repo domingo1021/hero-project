@@ -25,7 +25,7 @@ export class ExternalHttpService {
   }
 
   /**
-   * @description Get heroes from external api
+   * @description Get heroes from external api, throw if response is in invalid format.
    * @returns {Promise<Array<Hero>>}
    * @throws {InternalServerErrorException}
    */
@@ -54,6 +54,11 @@ export class ExternalHttpService {
     );
   }
 
+  /**
+   * @description Get single hero from external api, throw if response is in invalid format.
+   * @returns {Promise<Array<Hero>>}
+   * @throws {InternalServerErrorException}
+   */
   async getHeroById(id: string): Promise<Hero> {
     return firstValueFrom(
       this.httpService.get(`${this.EXTERNAL_ENDPOINT.GET_HEROES}/${id}`).pipe(
