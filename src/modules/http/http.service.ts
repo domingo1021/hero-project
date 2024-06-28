@@ -32,6 +32,13 @@ export class ExternalHttpService {
   async getHeroes(): Promise<Array<Hero>> {
     return firstValueFrom(
       this.httpService.get(this.EXTERNAL_ENDPOINT.GET_HEROES).pipe(
+        catchError((error: AxiosError) => {
+          console.log('error: ', error);
+          throw new InternalServerErrorException({
+            code: CustomErrorCodes.THIRDPARTY_SERVER_ERROR,
+            message: error.message,
+          });
+        }),
         map((response) => response.data),
         map((heroes) => {
           if (!Array.isArray(heroes) || !heroes.every(this.isHero)) {
@@ -43,12 +50,6 @@ export class ExternalHttpService {
 
           return heroes;
         }),
-        catchError((error: AxiosError) => {
-          throw new InternalServerErrorException({
-            code: CustomErrorCodes.THIRDPARTY_SERVER_ERROR,
-            message: error.message,
-          });
-        }),
       ),
     );
   }
@@ -56,6 +57,12 @@ export class ExternalHttpService {
   async getHeroById(id: string): Promise<Hero> {
     return firstValueFrom(
       this.httpService.get(`${this.EXTERNAL_ENDPOINT.GET_HEROES}/${id}`).pipe(
+        catchError((error: AxiosError) => {
+          throw new InternalServerErrorException({
+            code: CustomErrorCodes.THIRDPARTY_SERVER_ERROR,
+            message: error.message,
+          });
+        }),
         map((response) => response.data),
         map((hero) => {
           if (!this.isHero(hero)) {
@@ -66,12 +73,6 @@ export class ExternalHttpService {
           }
 
           return hero;
-        }),
-        catchError((error: AxiosError) => {
-          throw new InternalServerErrorException({
-            code: CustomErrorCodes.THIRDPARTY_SERVER_ERROR,
-            message: error.message,
-          });
         }),
       ),
     );
