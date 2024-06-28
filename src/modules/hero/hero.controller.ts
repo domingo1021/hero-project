@@ -1,7 +1,7 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
 
 import { HeroService } from '#hero/hero.service';
-import { GetHerosResponseDto } from '#hero/dto';
+import { GetHerosResponseDto, GetSingleHeroReqParams, Hero } from '#hero/dto';
 
 @Controller()
 export class HeroController {
@@ -18,5 +18,11 @@ export class HeroController {
     const heroes = await this.heroService.findAll();
 
     return { heroes };
+  }
+
+  @Get('heroes/:id')
+  async getHeroById(@Param() params: GetSingleHeroReqParams): Promise<Hero> {
+    const { id } = params;
+    return this.heroService.findById(id);
   }
 }

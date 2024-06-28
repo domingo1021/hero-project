@@ -2,9 +2,9 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { InternalServerErrorException } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { asyncScheduler, scheduled, throwError } from 'rxjs';
-import { AxiosError } from 'axios';
 
 import { ExternalHttpService } from '#http/http.service';
+import { mockAxiosError } from '#test/mocks';
 
 describe('ExternalHttpService', () => {
   let service: ExternalHttpService;
@@ -62,20 +62,9 @@ describe('ExternalHttpService', () => {
     });
 
     it('should throw InternalServerErrorException if there is a server error', async () => {
-      const errorMessage = 'Internal Server Error';
       spyHttpServiceGet.mockReturnValueOnce(
         scheduled(
-          throwError(
-            () =>
-              ({
-                message: errorMessage,
-                name: 'Error',
-                config: {},
-                code: '500',
-                request: {},
-                response: { status: 500, statusText: 'Internal Server Error' },
-              }) as AxiosError,
-          ),
+          throwError(() => mockAxiosError),
           asyncScheduler,
         ),
       );

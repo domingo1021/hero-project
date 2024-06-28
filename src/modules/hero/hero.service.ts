@@ -16,4 +16,8 @@ export class HeroService {
   async findAll(): Promise<Array<Hero>> {
     return this.http.getHeroes();
   }
+
+  async findById(id: string): Promise<Hero> {
+    return this.http.getHeroById(id);
+  }
 }

@@ -22,7 +22,9 @@
       "#app/*": ["./src/modules/app/*"],
       "#hero/*": ["./src/modules/hero/*"],
       "#http/*": ["./src/modules/http/*"],
+      "#logger/*": ["./src/modules/logger/*"],
       "#cores/*": ["./src/cores/*"],
+      "#test/*": ["./test/*"],
     }
   }
 }
