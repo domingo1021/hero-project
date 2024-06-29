@@ -1,28 +1,20 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { AxiosError } from 'axios';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
-import { Hero } from '#hero/dto';
+import { Hero, HeroProfile } from '#hero/dto';
+import { HeroDataValidator } from '#hero/hero.validator';
 import { CustomErrorCodes } from '#cores/types';
 
 @Injectable()
 export class ExternalHttpService {
   private readonly EXTERNAL_ENDPOINT = {
     GET_HEROES: 'https://hahow-recruit.herokuapp.com/heroes',
+    AUTHENTICATE: 'https://hahow-recruit.herokuapp.com/auth',
   };
   constructor(private httpService: HttpService) {}
-
-  private isHero(obj: any): obj is Hero {
-    return (
-      typeof obj === 'object' &&
-      obj !== null &&
-      typeof obj.id === 'string' &&
-      typeof obj.name === 'string' &&
-      typeof obj.image === 'string'
-    );
-  }
 
   /**
    * @description Get heroes from external api, throw if response is in invalid format.
@@ -33,7 +25,6 @@ export class ExternalHttpService {
     return firstValueFrom(
       this.httpService.get(this.EXTERNAL_ENDPOINT.GET_HEROES).pipe(
         catchError((error: AxiosError) => {
-          console.log('error: ', error);
           throw new InternalServerErrorException({
             code: CustomErrorCodes.THIRDPARTY_SERVER_ERROR,
             message: error.message,
@@ -41,7 +32,10 @@ export class ExternalHttpService {
         }),
         map((response) => response.data),
         map((heroes) => {
-          if (!Array.isArray(heroes) || !heroes.every(this.isHero)) {
+          if (
+            !Array.isArray(heroes) ||
+            !heroes.every(HeroDataValidator.isHero)
+          ) {
             throw new InternalServerErrorException({
               code: CustomErrorCodes.THIRDPARTY_API_RESPONSE_MISMATCH,
               message: `Invalid response format from upstream ${this.EXTERNAL_ENDPOINT.GET_HEROES}`,
@@ -55,7 +49,7 @@ export class ExternalHttpService {
   }
 
   /**
-   * @description Get single hero from external api, throw if response is in invalid format.
+   * @description Get single hero from external api, throw if response is in invalid format / network error.
    * @returns {Promise<Array<Hero>>}
    * @throws {InternalServerErrorException}
    */
@@ -70,7 +64,7 @@ export class ExternalHttpService {
         }),
         map((response) => response.data),
         map((hero) => {
-          if (!this.isHero(hero)) {
+          if (!HeroDataValidator.isHero(hero)) {
             throw new InternalServerErrorException({
               code: CustomErrorCodes.THIRDPARTY_API_RESPONSE_MISMATCH,
               message: `Invalid response format from upstream ${this.EXTERNAL_ENDPOINT.GET_HEROES}/${id}`,
@@ -80,6 +74,52 @@ export class ExternalHttpService {
           return hero;
         }),
       ),
+    );
+  }
+
+  /**
+   * @description Get single hero profile, throw if response is in invalid format / network error.
+   * @returns {Promise<Array<HeroProfile>>}
+   * @throws {InternalServerErrorException}
+   */
+  async getHeroProfileById(id: string): Promise<HeroProfile> {
+    return firstValueFrom(
+      this.httpService
+        .get(`${this.EXTERNAL_ENDPOINT.GET_HEROES}/${id}/profile`)
+        .pipe(
+          catchError((error: AxiosError) => {
+            throw new InternalServerErrorException({
+              code: CustomErrorCodes.THIRDPARTY_SERVER_ERROR,
+              message: error.message,
+            });
+          }),
+          map((response) => response.data),
+          map((heroProfile) => {
+            if (!HeroDataValidator.isHeroProfile(heroProfile)) {
+              throw new InternalServerErrorException({
+                code: CustomErrorCodes.THIRDPARTY_API_RESPONSE_MISMATCH,
+                message: `Invalid response format from upstream ${this.EXTERNAL_ENDPOINT.GET_HEROES}/${id}/profile`,
+              });
+            }
+
+            return heroProfile;
+          }),
+        ),
+    );
+  }
+
+  /**
+   * @description Authenticate user with external api, return true if 2xx success response, otherwise return false.
+   * @returns {Promise<boolean>}
+   */
+  async authenticate(username: string, password: string): Promise<boolean> {
+    return firstValueFrom(
+      this.httpService
+        .post(this.EXTERNAL_ENDPOINT.AUTHENTICATE, { name: username, password })
+        .pipe(
+          map(() => true),
+          catchError(() => of(false)),
+        ),
     );
   }
 }
