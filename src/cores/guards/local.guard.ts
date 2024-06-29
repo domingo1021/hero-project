@@ -3,6 +3,10 @@ import { Injectable, ExecutionContext, CanActivate } from '@nestjs/common';
 import { AuthService } from '#auth/auth.service';
 import { InternalRequest } from '#cores/types';
 
+/**
+ * @description Guard to authenticate the user with local strategy.
+ * @implements Set isAuthenicated to the request.user object.
+ */
 @Injectable()
 export class LocalAuthGuard implements CanActivate {
   private readonly USERNAME_KEY = 'Username';
