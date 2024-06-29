@@ -1,1 +1,1 @@
-export const INTERNAL_APIS = ['/health', '/metrics'];
+export const INTERNAL_APIS = ['/health'];
