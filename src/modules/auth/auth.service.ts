@@ -5,13 +5,10 @@ import { LocalUser } from '#cores/types';
 
 @Injectable()
 export class AuthService {
-  constructor(private readonly externalApi: ExternalHttpService) {}
+  constructor(private readonly httpApi: ExternalHttpService) {}
 
   async validateUser(username: string, password: string): Promise<LocalUser> {
-    const isAuthenticated = await this.externalApi.authenticate(
-      username,
-      password,
-    );
+    const isAuthenticated = await this.httpApi.authenticate(username, password);
 
     return { isAuthenticated };
   }
