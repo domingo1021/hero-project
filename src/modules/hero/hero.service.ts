@@ -1,40 +1,37 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 
-import { Hero } from '#hero/dto';
-import { ExternalHttpService } from '#http/http.service';
+import { Hero, HeroRepository } from '#hero/dto';
 
 @Injectable()
 export class HeroService {
-  constructor(private readonly httpApi: ExternalHttpService) {}
+  constructor(
+    @Inject('HeroRepository') private readonly heroRepo: HeroRepository,
+  ) {}
 
   /**
-   * @todo Need to add cache strategy to loose coupling with unsteady external api
    * @description Get all heroes
+   * @implements Get all heroes with profile if authenticated, otherwise get all heroes only
    * @param {boolean} isAuthenticated - Flag to determine if hero profile should be fetched
    * @returns {Promise<Array<Hero>>}
    * @throws {InternalServerErrorException}
    */
   async findAll(isAuthenticated: boolean = false): Promise<Array<Hero>> {
-    if (!isAuthenticated) return this.httpApi.getHeroes();
+    if (!isAuthenticated) return this.heroRepo.getAllHeroes();
 
-    const heroes = await this.httpApi.getHeroes();
-    await Promise.all(
-      heroes.map(async (hero) => {
-        const profile = await this.httpApi.getHeroProfileById(hero.id);
-        hero.profile = profile;
-      }),
-    );
-
-    return heroes;
+    return this.heroRepo.getAllHeroesWithProfile();
   }
 
+  /**
+   * @description Get single heroes
+   * @implements Get single heroes with profile if authenticated, otherwise get single heroes only
+   * @param {string} id - Hero ID
+   * @param {boolean} isAuthenticated - Flag to determine if hero profile should be fetched
+   * @returns {Promise<Array<Hero>>}
+   * @throws {InternalServerErrorException}
+   */
   async findById(id: string, isAuthenticated: boolean = false): Promise<Hero> {
-    const hero = await this.httpApi.getHeroById(id);
+    if (!isAuthenticated) return this.heroRepo.getHeroById(id);
 
-    if (isAuthenticated) {
-      hero.profile = await this.httpApi.getHeroProfileById(id);
-    }
-
-    return hero;
+    return this.heroRepo.getHeroWithProfileById(id);
   }
 }

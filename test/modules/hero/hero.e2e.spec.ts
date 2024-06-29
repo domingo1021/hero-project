@@ -14,6 +14,9 @@ import {
   mockGetSingleHeroProfileApi,
 } from '#test/mocks';
 import { HeroDataValidator } from '#src/modules/hero/hero.validator';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import { Cache } from 'cache-manager';
+import { CacheConfigModule } from '#src/modules/cache/cache.module';
 
 describe('AppController (e2e)', () => {
   const UUID_V4_REGEX =
@@ -23,19 +26,22 @@ describe('AppController (e2e)', () => {
 
   let app: INestApplication;
   let server: any;
+  let cacheManager: Cache;
 
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [AppModule],
+      imports: [AppModule, CacheConfigModule],
     }).compile();
 
     app = moduleFixture.createNestApplication();
     await app.init();
 
     server = app.getHttpServer();
+    cacheManager = moduleFixture.get<Cache>(CACHE_MANAGER);
   });
 
   afterEach(async () => {
+    await cacheManager.reset(); // Clear cache after each test
     await app.close();
     nock.cleanAll();
   });
