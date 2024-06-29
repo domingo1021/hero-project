@@ -14,7 +14,7 @@ export class LocalAuthGuard implements CanActivate {
     const username = request.get(this.USERNAME_KEY) as string;
     const password = request.get(this.PASSWORD_KEY) as string;
 
-    if (username === undefined || !password === undefined) {
+    if (username === undefined || password === undefined) {
       request.user = { isAuthenticated: false };
     }
     request.user = await this.authService.validateUser(username, password);
