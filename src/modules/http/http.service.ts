@@ -49,7 +49,7 @@ export class ExternalHttpService {
   }
 
   /**
-   * @description Get single hero from external api, throw if response is in invalid format.
+   * @description Get single hero from external api, throw if response is in invalid format / network error.
    * @returns {Promise<Array<Hero>>}
    * @throws {InternalServerErrorException}
    */
@@ -77,6 +77,11 @@ export class ExternalHttpService {
     );
   }
 
+  /**
+   * @description Get single hero profile, throw if response is in invalid format / network error.
+   * @returns {Promise<Array<HeroProfile>>}
+   * @throws {InternalServerErrorException}
+   */
   async getHeroProfileById(id: string): Promise<HeroProfile> {
     return firstValueFrom(
       this.httpService
@@ -103,13 +108,17 @@ export class ExternalHttpService {
     );
   }
 
+  /**
+   * @description Authenticate user with external api, return true if 2xx success response, otherwise return false.
+   * @returns {Promise<boolean>}
+   */
   async authenticate(username: string, password: string): Promise<boolean> {
     return firstValueFrom(
       this.httpService
         .post(this.EXTERNAL_ENDPOINT.AUTHENTICATE, { name: username, password })
         .pipe(
-          catchError(() => of(false)),
           map(() => true),
+          catchError(() => of(false)),
         ),
     );
   }
