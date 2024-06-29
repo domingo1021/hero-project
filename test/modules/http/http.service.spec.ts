@@ -37,8 +37,8 @@ describe('ExternalHttpService', () => {
   describe('getHeroes', () => {
     it('should return an array of heroes', async () => {
       const heroes = [
-        { id: '1', name: 'Hero 1', image: 'image1.jpg' },
-        { id: '2', name: 'Hero 2', image: 'image2.jpg' },
+        { id: '1', name: 'Hero A', image: 'http://hahow.com/image1.jpg' },
+        { id: '2', name: 'Hero B', image: 'http://hahow.com/image2.jpg' },
       ];
       spyHttpServiceGet.mockReturnValueOnce(
         scheduled([{ data: heroes }], asyncScheduler),
@@ -49,8 +49,8 @@ describe('ExternalHttpService', () => {
 
     it('should throw InternalServerErrorException if response format is invalid', async () => {
       const invalidResponse = [
-        { id: '1', name: 'Hero 1' }, // Missing 'image' property
-        { id: '2', name: 'Hero 2', image: 'image2.jpg' },
+        { id: '1', name: 'Hero A' }, // Missing 'image' property
+        { id: '2', name: 'Hero B', image: 'http://hahow.com/image1.jpg' },
       ];
       spyHttpServiceGet.mockReturnValueOnce(
         scheduled([{ data: invalidResponse }], asyncScheduler),
