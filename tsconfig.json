@@ -23,6 +23,7 @@
       "#hero/*": ["./src/modules/hero/*"],
       "#http/*": ["./src/modules/http/*"],
       "#logger/*": ["./src/modules/logger/*"],
+      "#auth/*": ["./src/modules/auth/*"],
       "#cores/*": ["./src/cores/*"],
       "#test/*": ["./test/*"],
     }
