@@ -22,3 +22,10 @@ export class GetSingleHeroReqParams {
   @IsNumberString()
   id: string;
 }
+
+export interface HeroRepository {
+  getHeroById(id: string): Promise<Hero>;
+  getHeroWithProfileById(id: string): Promise<Hero>;
+  getAllHeroes(): Promise<Array<Hero>>;
+  getAllHeroesWithProfile(): Promise<Array<Hero>>;
+}

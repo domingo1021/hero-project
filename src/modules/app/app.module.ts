@@ -5,6 +5,9 @@ import {
   RequestMethod,
 } from '@nestjs/common';
 import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
+import { ConfigModule } from '@nestjs/config';
+
+import * as config from 'config';
 
 import { INTERNAL_APIS } from '#cores/constants';
 import { AllExceptionsFilter } from '#cores/exceptions/general.exception';
@@ -18,7 +21,14 @@ import { CustomLog } from '#logger/appLog.service';
 import { LoggerModule } from '#logger/logger.module';
 
 @Module({
-  imports: [LoggerModule, HeroModule],
+  imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+      load: [() => config],
+    }),
+    LoggerModule,
+    HeroModule,
+  ],
   controllers: [HeroController, AppController],
   providers: [
     { provide: APP_INTERCEPTOR, useClass: ResponseLoggerInterceptor },

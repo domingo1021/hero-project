@@ -24,6 +24,7 @@
       "#http/*": ["./src/modules/http/*"],
       "#logger/*": ["./src/modules/logger/*"],
       "#auth/*": ["./src/modules/auth/*"],
+      "#cache/*": ["./src/modules/cache/*"],
       "#cores/*": ["./src/cores/*"],
       "#test/*": ["./test/*"],
     }

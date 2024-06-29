@@ -1,0 +1,4 @@
+{
+    "API_REDIS_HOST": "localhost",
+    "API_REDIS_PORT": 6379
+}
