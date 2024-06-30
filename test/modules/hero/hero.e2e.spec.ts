@@ -1,11 +1,16 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
+
 import * as request from 'supertest';
 import * as nock from 'nock';
+import { Cache } from 'cache-manager';
 
+import { CustomErrorCodes } from '#cores/types';
 import { Hero } from '#hero/dto';
 import { AppModule } from '#app/app.module';
-import { CustomErrorCodes } from '#src/cores/types';
+import { HeroDataValidator } from '#hero/hero.validator';
+import { CacheConfigModule } from '#cache/cache.module';
 import {
   mockAuthApi,
   mockAxiosError,
@@ -13,10 +18,6 @@ import {
   mockGetSingleHeroApi,
   mockGetSingleHeroProfileApi,
 } from '#test/mocks';
-import { HeroDataValidator } from '#src/modules/hero/hero.validator';
-import { CACHE_MANAGER } from '@nestjs/cache-manager';
-import { Cache } from 'cache-manager';
-import { CacheConfigModule } from '#src/modules/cache/cache.module';
 
 describe('AppController (e2e)', () => {
   const UUID_V4_REGEX =
@@ -246,7 +247,6 @@ describe('AppController (e2e)', () => {
           .expect(200)
           .expect((res) => {
             const hero = res.body;
-            console.log('hero: ', hero);
             expect(HeroDataValidator.isHero(hero)).toBe(true);
 
             const profile = hero.profile;
