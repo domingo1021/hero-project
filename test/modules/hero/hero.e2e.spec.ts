@@ -19,6 +19,8 @@ import {
   mockGetSingleHeroApi,
   mockGetSingleHeroProfileApi,
 } from '#test/mocks';
+import { ExternalHttpModule } from '#http/http.module';
+import { ExternalHttpService } from '#http/http.service';
 
 describe('AppController (e2e)', () => {
   const UUID_V4_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/;
@@ -28,10 +30,11 @@ describe('AppController (e2e)', () => {
   let app: INestApplication;
   let server: any;
   let cacheManager: Cache;
+  let httpApi: ExternalHttpService;
 
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [AppModule, CacheConfigModule],
+      imports: [AppModule, CacheConfigModule, ExternalHttpModule],
     }).compile();
 
     app = moduleFixture.createNestApplication();
@@ -39,6 +42,7 @@ describe('AppController (e2e)', () => {
 
     server = app.getHttpServer();
     cacheManager = moduleFixture.get<Cache>(CACHE_MANAGER);
+    httpApi = moduleFixture.get<ExternalHttpService>(ExternalHttpService);
   });
 
   afterEach(async () => {
@@ -177,6 +181,54 @@ describe('AppController (e2e)', () => {
           });
       });
     });
+
+    describe('Cached Heroes', () => {
+      it('should call GET List Hero at first time, and get data from cache for second time', async () => {
+        const spyGetHeroesApi = jest.spyOn(httpApi, 'getHeroes');
+        const spyAuthApi = jest.spyOn(httpApi, 'authenticate');
+
+        // first request to fetch heroes
+        mockGetListHeroesApi();
+        mockGetSingleHeroProfileApi();
+        mockAuthApi();
+        await request(server)
+          .get('/heroes')
+          .set('Username', 'hahow')
+          .set('Password', 'rocks')
+          .expect(200)
+          .expect((res) => {
+            expect(res.body).toHaveProperty('heroes');
+            expect(Array.isArray(res.body.heroes)).toBe(true);
+
+            const heroes: Array<Hero> = res.body.heroes;
+            heroes.forEach((hero: Hero) => {
+              expect(HeroDataValidator.isHero(hero)).toBe(true);
+              expect(HeroDataValidator.isHeroProfile(hero.profile)).toBe(true);
+            });
+          });
+        expect(spyGetHeroesApi).toBeCalledTimes(1);
+        expect(spyAuthApi).toBeCalledTimes(1);
+
+        // second request to fetch heroes from cache
+        await request(server)
+          .get('/heroes')
+          .set('Username', 'hahow')
+          .set('Password', 'rocks')
+          .expect(200)
+          .expect((res) => {
+            expect(res.body).toHaveProperty('heroes');
+            expect(Array.isArray(res.body.heroes)).toBe(true);
+
+            const heroes: Array<Hero> = res.body.heroes;
+            heroes.forEach((hero: Hero) => {
+              expect(HeroDataValidator.isHero(hero)).toBe(true);
+              expect(HeroDataValidator.isHeroProfile(hero.profile)).toBe(true);
+            });
+          });
+        expect(spyGetHeroesApi).toBeCalledTimes(1);
+        expect(spyAuthApi).toBeCalledTimes(1);
+      });
+    });
   });
 
   describe('Get Single Hero', () => {
@@ -196,6 +248,17 @@ describe('AppController (e2e)', () => {
           .expect((res) => {
             const hero = res.body;
             expect(HeroDataValidator.isHero(hero)).toBe(true);
+          });
+      });
+
+      it('/heroes/:id, return 400 bad request if format of id is invalid', () => {
+        return request(server)
+          .get('/heroes/invalidId')
+          .expect(400)
+          .expect((res) => {
+            expect(res.body.code).toBe(CustomErrorCodes.BAD_REQUEST);
+            expect(res.body.message).toBeDefined();
+            expect(res.body.requestId).toMatch(UUID_V4_REGEX);
           });
       });
 
@@ -315,6 +378,51 @@ describe('AppController (e2e)', () => {
             expect(HeroDataValidator.isHero(hero)).toBe(true);
             expect(hero).not.toHaveProperty('profile');
           });
+      });
+    });
+
+    describe('Cached Heroes', () => {
+      it('should call GET Single Hero at first time, and get data from cache for second time', async () => {
+        const spyGetHeroApi = jest.spyOn(httpApi, 'getHeroById');
+        const spyGetHeroProfileApi = jest.spyOn(httpApi, 'getHeroProfileById');
+        const spyAuthApi = jest.spyOn(httpApi, 'authenticate');
+
+        mockGetSingleHeroApi();
+        mockGetSingleHeroProfileApi();
+        mockAuthApi();
+
+        // first request to fetch hero
+        await request(server)
+          .get('/heroes/1')
+          .set('Username', 'hahow')
+          .set('Password', 'rocks')
+          .expect(200)
+          .expect((res) => {
+            const hero = res.body;
+            console.log('hero', hero);
+            expect(HeroDataValidator.isHero(hero)).toBe(true);
+            expect(HeroDataValidator.isHeroProfile(hero.profile)).toBe(true);
+          });
+
+        expect(spyGetHeroApi).toBeCalledTimes(1);
+        expect(spyGetHeroProfileApi).toBeCalledTimes(1);
+        expect(spyAuthApi).toBeCalledTimes(1);
+
+        // second request to fetch hero from cache
+        await request(server)
+          .get('/heroes/1')
+          .expect(200)
+          .set('Username', 'hahow')
+          .set('Password', 'rocks')
+          .expect((res) => {
+            const hero = res.body;
+            expect(HeroDataValidator.isHero(hero)).toBe(true);
+            expect(HeroDataValidator.isHeroProfile(hero.profile)).toBe(true);
+          });
+
+        expect(spyGetHeroApi).toBeCalledTimes(1);
+        expect(spyGetHeroProfileApi).toBeCalledTimes(1);
+        expect(spyAuthApi).toBeCalledTimes(1);
       });
     });
   });
