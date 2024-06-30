@@ -4,6 +4,7 @@ import { CACHE_MANAGER } from '@nestjs/cache-manager';
 
 import * as request from 'supertest';
 import * as nock from 'nock';
+import { AxiosError } from 'axios';
 import { Cache } from 'cache-manager';
 
 import { CustomErrorCodes } from '#cores/types';
@@ -219,6 +220,28 @@ describe('AppController (e2e)', () => {
           .expect(500)
           .expect((res) => {
             expect(res.body.code).toBe(CustomErrorCodes.THIRDPARTY_API_RESPONSE_MISMATCH);
+            expect(res.body.message).toBeDefined();
+            expect(res.body.requestId).toMatch(UUID_V4_REGEX);
+          });
+      });
+
+      it("/heroes/:id, return 404 if hero doesn't exist.", () => {
+        nock(baseUrl)
+          .get(endpoint)
+          .reply(404, {
+            message: 'Hero not found',
+            name: 'Error',
+            config: {},
+            code: '404',
+            request: {},
+            response: { status: 404, statusText: 'Not Found' },
+          } as AxiosError);
+
+        return request(server)
+          .get('/heroes/1')
+          .expect(404)
+          .expect((res) => {
+            expect(res.body.code).toBe(CustomErrorCodes.HERO_NOT_FOUND);
             expect(res.body.message).toBeDefined();
             expect(res.body.requestId).toMatch(UUID_V4_REGEX);
           });
