@@ -15,17 +15,15 @@ import { CacheService } from './cache.service';
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) => {
         const DEFAULT_REDIS_HOST = 'localhost';
-        const DEFAULT_REDIS_PORT = 3000;
+        const DEFAULT_REDIS_PORT = 6379;
 
         return {
           store: await redisStore({
             socket: {
               host:
-                configService.get<string>('API_REDIS_HOST') ||
-                DEFAULT_REDIS_HOST,
+                configService.get<string>('REDIS_HOST') || DEFAULT_REDIS_HOST,
               port: +(
-                configService.get<number>('API_REDIS_PORT') ||
-                DEFAULT_REDIS_PORT
+                configService.get<number>('REDIS_PORT') || DEFAULT_REDIS_PORT
               ),
             },
           }),

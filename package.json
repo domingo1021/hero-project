@@ -12,7 +12,7 @@
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
-    "prepare": "husky install",
+    "postinstall": "if [ \"$NODE_ENV\" != \"production\" ]; then husky install; fi",
     "lint": "lint-staged",
     "test": "jest"
   },
