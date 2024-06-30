@@ -4,6 +4,7 @@ import { CACHE_MANAGER } from '@nestjs/cache-manager';
 
 import * as request from 'supertest';
 import * as nock from 'nock';
+import { AxiosError } from 'axios';
 import { Cache } from 'cache-manager';
 
 import { CustomErrorCodes } from '#cores/types';
@@ -20,7 +21,8 @@ import {
 } from '#test/mocks';
 
 describe('AppController (e2e)', () => {
-  const UUID_V4_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/;
+  const UUID_V4_REGEX =
+    /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/;
   const baseUrl = 'https://hahow-recruit.herokuapp.com';
   const authEndpoint = '/auth';
 
@@ -74,7 +76,9 @@ describe('AppController (e2e)', () => {
           .get('/heroes')
           .expect(500)
           .expect((res) => {
-            expect(res.body.code).toBe(CustomErrorCodes.THIRDPARTY_SERVER_ERROR);
+            expect(res.body.code).toBe(
+              CustomErrorCodes.THIRDPARTY_SERVER_ERROR,
+            );
             expect(res.body.message).toBeDefined();
             expect(res.body.requestId).toMatch(UUID_V4_REGEX);
           });
@@ -205,20 +209,48 @@ describe('AppController (e2e)', () => {
           .get('/heroes/1')
           .expect(500)
           .expect((res) => {
-            expect(res.body.code).toBe(CustomErrorCodes.THIRDPARTY_SERVER_ERROR);
+            expect(res.body.code).toBe(
+              CustomErrorCodes.THIRDPARTY_SERVER_ERROR,
+            );
             expect(res.body.message).toBeDefined();
             expect(res.body.requestId).toMatch(UUID_V4_REGEX);
           });
       });
 
       it('/heroes/:id, return 500 if response format is invalid.', () => {
-        nock(baseUrl).get(endpoint).reply(200, { code: 1000, message: 'Backend error' });
+        nock(baseUrl)
+          .get(endpoint)
+          .reply(200, { code: 1000, message: 'Backend error' });
 
         return request(server)
           .get('/heroes/1')
           .expect(500)
           .expect((res) => {
-            expect(res.body.code).toBe(CustomErrorCodes.THIRDPARTY_API_RESPONSE_MISMATCH);
+            expect(res.body.code).toBe(
+              CustomErrorCodes.THIRDPARTY_API_RESPONSE_MISMATCH,
+            );
+            expect(res.body.message).toBeDefined();
+            expect(res.body.requestId).toMatch(UUID_V4_REGEX);
+          });
+      });
+
+      it("/heroes/:id, return 404 if hero doesn't exist.", () => {
+        nock(baseUrl)
+          .get(endpoint)
+          .reply(404, {
+            message: 'Hero not found',
+            name: 'Error',
+            config: {},
+            code: '500',
+            request: {},
+            response: { status: 404, statusText: 'Not Found' },
+          } as AxiosError);
+
+        return request(server)
+          .get('/heroes/1')
+          .expect(404)
+          .expect((res) => {
+            expect(res.body.code).toBe(CustomErrorCodes.HERO_NOT_FOUND);
             expect(res.body.message).toBeDefined();
             expect(res.body.requestId).toMatch(UUID_V4_REGEX);
           });
