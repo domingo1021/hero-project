@@ -44,13 +44,13 @@ node -v #v20.15.0
 docker run -d --name redis -p 6379:6379 redis
 ```
 
-2. Install dependency libraries
+3. Install dependency libraries
 
 ```sh
 npm install
 ```
 
-3. Run npm script to start app
+4. Run npm script to start app
 
 ```bash
 # development
@@ -121,7 +121,7 @@ $ npm run test
      - `@nestjs/cache-manager`: Cache Manager which help NestJS wrap cache client
      - `cache-manager`: Cache module for Node.js, support various storage type, including in-memory and Redis
      - `cache-manager-redis-store`: cache-manager plugin to use Redis as cache store.
-     - `redis`: Regis client in Node.js
+     - `redis`: Redis client in Node.js
    - Logger
      - `winston`: Node.js Logging library which supports log levels, log storage
      - `winston-daily-rotate-file`: Help winston to transport & rotate log into files.
@@ -147,5 +147,5 @@ $ npm run test
 
 ## Comment Principle
 
-1. **Class Domumentation** & **Function Documentation**: Describe the purpose of the class, methods, or function, its parameters, and its return value using JSDoc.
+1. **Class Documentation** & **Function Documentation**: Describe the purpose of the class, methods, or function, its parameters, and its return value using JSDoc.
 2. **Special Case Comments**: Use inline comments to explain complex logic, special cases, and important decisions within the code.
