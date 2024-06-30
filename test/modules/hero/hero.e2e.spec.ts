@@ -232,7 +232,7 @@ describe('AppController (e2e)', () => {
             message: 'Hero not found',
             name: 'Error',
             config: {},
-            code: '500',
+            code: '404',
             request: {},
             response: { status: 404, statusText: 'Not Found' },
           } as AxiosError);
