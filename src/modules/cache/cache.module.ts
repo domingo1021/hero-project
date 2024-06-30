@@ -4,7 +4,7 @@ import { CacheModule, CacheModuleAsyncOptions } from '@nestjs/cache-manager';
 
 import { redisStore } from 'cache-manager-redis-store';
 
-import { CacheService } from './cache.service';
+import { CacheService } from '#cache/cache.service';
 
 // Referece: https://github.com/dabroek/node-cache-manager-redis-store/issues/53
 @Module({
@@ -20,11 +20,8 @@ import { CacheService } from './cache.service';
         return {
           store: await redisStore({
             socket: {
-              host:
-                configService.get<string>('REDIS_HOST') || DEFAULT_REDIS_HOST,
-              port: +(
-                configService.get<number>('REDIS_PORT') || DEFAULT_REDIS_PORT
-              ),
+              host: configService.get<string>('REDIS_HOST') || DEFAULT_REDIS_HOST,
+              port: +(configService.get<number>('REDIS_PORT') || DEFAULT_REDIS_PORT),
             },
           }),
           ttl: 5000,

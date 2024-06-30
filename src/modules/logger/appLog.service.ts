@@ -1,5 +1,6 @@
 import { Global, Injectable } from '@nestjs/common';
-import { BaseLog } from './type/baseLog';
+
+import { BaseLog } from '#logger/type/baseLog';
 
 /**
  * @description Custom log implement Nest LoggerService, it will log all endpoint related logs.

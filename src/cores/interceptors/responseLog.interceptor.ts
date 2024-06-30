@@ -1,9 +1,5 @@
-import {
-  CallHandler,
-  ExecutionContext,
-  Injectable,
-  NestInterceptor,
-} from '@nestjs/common';
+import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from '@nestjs/common';
+
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { Response } from 'express';
@@ -38,9 +34,7 @@ export class ResponseLoggerInterceptor implements NestInterceptor {
         const { statusCode } = response;
         this.logger.log(
           requestId,
-          `Response, ${statusCode}, ${url}, ${JSON.stringify(
-            response.getHeaders(),
-          )}, ${JSON.stringify(data)}`,
+          `Response, ${statusCode}, ${url}, ${JSON.stringify(response.getHeaders())}, ${JSON.stringify(data)}`,
         );
       }),
     );

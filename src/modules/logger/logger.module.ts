@@ -1,8 +1,9 @@
 import { Module, Provider } from '@nestjs/common';
+
 import * as winston from 'winston';
 
-import { CustomLog } from './appLog.service';
-import { WinstonConfig } from './logger.config';
+import { CustomLog } from '#logger/appLog.service';
+import { WinstonConfig } from '#logger/logger.config';
 
 const WinstonProvider: Provider = {
   provide: 'Winston',

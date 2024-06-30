@@ -1,10 +1,5 @@
-import {
-  ExceptionFilter,
-  Catch,
-  ArgumentsHost,
-  HttpStatus,
-  HttpException,
-} from '@nestjs/common';
+import { ExceptionFilter, Catch, ArgumentsHost, HttpStatus, HttpException } from '@nestjs/common';
+
 import { Response } from 'express';
 
 import { InternalRequest, CustomErrorCodes, ErrorResponse } from '#cores/types';
@@ -42,9 +37,9 @@ export class AllExceptionsFilter implements ExceptionFilter {
 
     this.logger.info(
       requestId,
-      `Response, ${statusCode}, ${request.url}, ${JSON.stringify(
-        response.getHeaders(),
-      )}, Error: ${JSON.stringify(errorResponse)}`,
+      `Response, ${statusCode}, ${request.url}, ${JSON.stringify(response.getHeaders())}, Error: ${JSON.stringify(
+        errorResponse,
+      )}`,
     );
 
     response.status(statusCode).json(errorResponse);
