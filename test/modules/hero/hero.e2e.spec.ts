@@ -21,8 +21,7 @@ import {
 } from '#test/mocks';
 
 describe('AppController (e2e)', () => {
-  const UUID_V4_REGEX =
-    /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/;
+  const UUID_V4_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/;
   const baseUrl = 'https://hahow-recruit.herokuapp.com';
   const authEndpoint = '/auth';
 
@@ -76,9 +75,7 @@ describe('AppController (e2e)', () => {
           .get('/heroes')
           .expect(500)
           .expect((res) => {
-            expect(res.body.code).toBe(
-              CustomErrorCodes.THIRDPARTY_SERVER_ERROR,
-            );
+            expect(res.body.code).toBe(CustomErrorCodes.THIRDPARTY_SERVER_ERROR);
             expect(res.body.message).toBeDefined();
             expect(res.body.requestId).toMatch(UUID_V4_REGEX);
           });
@@ -209,26 +206,20 @@ describe('AppController (e2e)', () => {
           .get('/heroes/1')
           .expect(500)
           .expect((res) => {
-            expect(res.body.code).toBe(
-              CustomErrorCodes.THIRDPARTY_SERVER_ERROR,
-            );
+            expect(res.body.code).toBe(CustomErrorCodes.THIRDPARTY_SERVER_ERROR);
             expect(res.body.message).toBeDefined();
             expect(res.body.requestId).toMatch(UUID_V4_REGEX);
           });
       });
 
       it('/heroes/:id, return 500 if response format is invalid.', () => {
-        nock(baseUrl)
-          .get(endpoint)
-          .reply(200, { code: 1000, message: 'Backend error' });
+        nock(baseUrl).get(endpoint).reply(200, { code: 1000, message: 'Backend error' });
 
         return request(server)
           .get('/heroes/1')
           .expect(500)
           .expect((res) => {
-            expect(res.body.code).toBe(
-              CustomErrorCodes.THIRDPARTY_API_RESPONSE_MISMATCH,
-            );
+            expect(res.body.code).toBe(CustomErrorCodes.THIRDPARTY_API_RESPONSE_MISMATCH);
             expect(res.body.message).toBeDefined();
             expect(res.body.requestId).toMatch(UUID_V4_REGEX);
           });
