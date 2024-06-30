@@ -1,4 +1,4 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { HttpStatus, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 
 import { AxiosError } from 'axios';
@@ -15,6 +15,7 @@ export class ExternalHttpService {
     GET_HEROES: 'https://hahow-recruit.herokuapp.com/heroes',
     AUTHENTICATE: 'https://hahow-recruit.herokuapp.com/auth',
   };
+
   constructor(private httpService: HttpService) {}
 
   /**
@@ -55,6 +56,12 @@ export class ExternalHttpService {
     return firstValueFrom(
       this.httpService.get(`${this.EXTERNAL_ENDPOINT.GET_HEROES}/${id}`).pipe(
         catchError((error: AxiosError) => {
+          if (error.response?.status === HttpStatus.NOT_FOUND) {
+            throw new NotFoundException({
+              code: CustomErrorCodes.HERO_NOT_FOUND,
+              message: `Hero with id ${id} not found`,
+            });
+          }
           throw new InternalServerErrorException({
             code: CustomErrorCodes.THIRDPARTY_SERVER_ERROR,
             message: error.message,
@@ -84,6 +91,12 @@ export class ExternalHttpService {
     return firstValueFrom(
       this.httpService.get(`${this.EXTERNAL_ENDPOINT.GET_HEROES}/${id}/profile`).pipe(
         catchError((error: AxiosError) => {
+          if (error.status === HttpStatus.NOT_FOUND) {
+            throw new NotFoundException({
+              code: CustomErrorCodes.HERO_NOT_FOUND,
+              message: `Hero with id ${id} not found`,
+            });
+          }
           throw new InternalServerErrorException({
             code: CustomErrorCodes.THIRDPARTY_SERVER_ERROR,
             message: error.message,
