@@ -147,7 +147,7 @@ $ npm run test
      - `husky`: Git hook, help to check coding style at git related hook point(e.g. **pre-commit** / **pre-push**)
      - `lint-staged`: Linter for git staged files.
 
-## Comment Priciple
+## Comment Principle
 
 1. **Class Domumentation** & **Function Documentation**: Describe the purpose of the class, methods, or function, its parameters, and its return value using JSDoc.
 2. **Special Case Comments**: Use inline comments to explain complex logic, special cases, and important decisions within the code.
