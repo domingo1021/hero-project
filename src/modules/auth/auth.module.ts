@@ -2,7 +2,7 @@ import { Global, Module } from '@nestjs/common';
 
 import { ExternalHttpModule } from '#http/http.module';
 import { CacheConfigModule } from '#cache/cache.module';
-import { AuthService } from './auth.service';
+import { AuthService } from '#auth/auth.service';
 
 @Global()
 @Module({

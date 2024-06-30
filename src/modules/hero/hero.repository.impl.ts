@@ -10,6 +10,7 @@ export class HeroRepositoryImpl implements HeroRepository {
   private readonly GET_ALL_HEROES_WITH_PROFILE_KEY = 'heroes_with_profile';
   private readonly GET_HERO_BY_ID_KEY = 'hero_'; // hero_{id}
   private readonly GET_HERO_WITH_PROFILE_BY_ID_KEY = 'hero_with_profile_'; // hero_with_profile_{id}
+
   constructor(
     private readonly cacheService: CacheService,
     private readonly httpApi: ExternalHttpService,
@@ -21,18 +22,13 @@ export class HeroRepositoryImpl implements HeroRepository {
    * @throws {InternalServerErrorException}
    */
   async getAllHeroes(): Promise<Array<Hero>> {
-    const cachedHeroes = await this.cacheService.get<string>(
-      this.GET_ALL_HEROES_KEY,
-    );
+    const cachedHeroes = await this.cacheService.get<string>(this.GET_ALL_HEROES_KEY);
     if (cachedHeroes) {
       return JSON.parse(cachedHeroes);
     }
 
     const heroes: Array<Hero> = await this.httpApi.getHeroes();
-    await this.cacheService.set(
-      this.GET_ALL_HEROES_KEY,
-      JSON.stringify(heroes),
-    );
+    await this.cacheService.set(this.GET_ALL_HEROES_KEY, JSON.stringify(heroes));
 
     return heroes;
   }
@@ -44,9 +40,7 @@ export class HeroRepositoryImpl implements HeroRepository {
    * @throws {InternalServerErrorException}
    */
   async getAllHeroesWithProfile(): Promise<Array<Hero>> {
-    const cachedHeroes = await this.cacheService.get<string>(
-      this.GET_ALL_HEROES_WITH_PROFILE_KEY,
-    );
+    const cachedHeroes = await this.cacheService.get<string>(this.GET_ALL_HEROES_WITH_PROFILE_KEY);
     if (cachedHeroes) {
       return JSON.parse(cachedHeroes);
     }
@@ -58,10 +52,7 @@ export class HeroRepositoryImpl implements HeroRepository {
         hero.profile = profile;
       }),
     );
-    await this.cacheService.set(
-      this.GET_ALL_HEROES_WITH_PROFILE_KEY,
-      JSON.stringify(heroes),
-    );
+    await this.cacheService.set(this.GET_ALL_HEROES_WITH_PROFILE_KEY, JSON.stringify(heroes));
 
     return heroes;
   }

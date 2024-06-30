@@ -1,4 +1,4 @@
-import { Hero, HeroProfile } from './dto';
+import { Hero, HeroProfile } from '#hero/dto';
 
 /**
  * A class that contains static utils methods to validate hero data.

@@ -27,10 +27,7 @@ export class HeroController {
 
   @UseGuards(LocalAuthGuard)
   @Get('heroes/:id')
-  async getHeroById(
-    @Param() params: GetSingleHeroReqParams,
-    @User() user: LocalUser,
-  ): Promise<Hero> {
+  async getHeroById(@Param() params: GetSingleHeroReqParams, @User() user: LocalUser): Promise<Hero> {
     const { id } = params;
     const { isAuthenticated } = user;
     return this.heroService.findById(id, isAuthenticated);

@@ -11,6 +11,7 @@ import { InternalRequest } from '#cores/types';
 export class LocalAuthGuard implements CanActivate {
   private readonly USERNAME_KEY = 'Username';
   private readonly PASSWORD_KEY = 'Password';
+
   constructor(private readonly authService: AuthService) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {

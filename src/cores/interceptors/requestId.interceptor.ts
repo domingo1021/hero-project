@@ -1,12 +1,9 @@
-import {
-  ExecutionContext,
-  CallHandler,
-  Injectable,
-  NestInterceptor,
-} from '@nestjs/common';
+import { ExecutionContext, CallHandler, Injectable, NestInterceptor } from '@nestjs/common';
+
 import { Observable } from 'rxjs';
 import { v4 as uuidv4 } from 'uuid';
-import { InternalRequest } from '../types';
+
+import { InternalRequest } from '#cores/types';
 
 /**
  * @description RequestIdInterceptor is a interceptor to help generate request id.

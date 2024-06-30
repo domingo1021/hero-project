@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { InternalServerErrorException } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
+
 import { asyncScheduler, scheduled, throwError } from 'rxjs';
 
 import { ExternalHttpService } from '#http/http.service';
@@ -40,9 +41,7 @@ describe('ExternalHttpService', () => {
         { id: '1', name: 'Hero A', image: 'http://hahow.com/image1.jpg' },
         { id: '2', name: 'Hero B', image: 'http://hahow.com/image2.jpg' },
       ];
-      spyHttpServiceGet.mockReturnValueOnce(
-        scheduled([{ data: heroes }], asyncScheduler),
-      );
+      spyHttpServiceGet.mockReturnValueOnce(scheduled([{ data: heroes }], asyncScheduler));
 
       await expect(service.getHeroes()).resolves.toEqual(heroes);
     });
@@ -52,13 +51,9 @@ describe('ExternalHttpService', () => {
         { id: '1', name: 'Hero A' }, // Missing 'image' property
         { id: '2', name: 'Hero B', image: 'http://hahow.com/image1.jpg' },
       ];
-      spyHttpServiceGet.mockReturnValueOnce(
-        scheduled([{ data: invalidResponse }], asyncScheduler),
-      );
+      spyHttpServiceGet.mockReturnValueOnce(scheduled([{ data: invalidResponse }], asyncScheduler));
 
-      await expect(service.getHeroes()).rejects.toThrow(
-        InternalServerErrorException,
-      );
+      await expect(service.getHeroes()).rejects.toThrow(InternalServerErrorException);
     });
 
     it('should throw InternalServerErrorException if there is a server error', async () => {
@@ -69,9 +64,7 @@ describe('ExternalHttpService', () => {
         ),
       );
 
-      await expect(service.getHeroes()).rejects.toThrow(
-        InternalServerErrorException,
-      );
+      await expect(service.getHeroes()).rejects.toThrow(InternalServerErrorException);
     });
   });
 });

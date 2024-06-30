@@ -1,4 +1,5 @@
 import { Injectable, NestMiddleware } from '@nestjs/common';
+
 import { Response, NextFunction } from 'express';
 
 import { InternalRequest } from '#cores/types';
@@ -12,10 +13,7 @@ export class RequestLoggerMiddleware implements NestMiddleware {
     const requestId = req.locals.requestId;
     const { method, url, headers, body } = req;
 
-    this.logger.log(
-      requestId,
-      `Request, ${method}, ${url}, ${JSON.stringify(headers)}, ${JSON.stringify(body)}`,
-    );
+    this.logger.log(requestId, `Request, ${method}, ${url}, ${JSON.stringify(headers)}, ${JSON.stringify(body)}`);
 
     next();
   }

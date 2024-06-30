@@ -1,6 +1,8 @@
-import * as winston from 'winston';
 import { LoggerService } from '@nestjs/common';
-import { BaseLog } from './type/baseLog';
+
+import * as winston from 'winston';
+
+import { BaseLog } from '#logger/type/baseLog';
 
 /**
  * @description System log implement Nest LoggerService, it will log all server related system logs.
