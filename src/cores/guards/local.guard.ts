@@ -4,8 +4,7 @@ import { AuthService } from '#auth/auth.service';
 import { InternalRequest } from '#cores/types';
 
 /**
- * @description Guard to authenticate the user with local strategy.
- * @implements Set isAuthenicated to the request.user object.
+ * @description Guard to authenticate the user with local strategy, set authentication result to the `request.user` object.
  */
 @Injectable()
 export class LocalAuthGuard implements CanActivate {

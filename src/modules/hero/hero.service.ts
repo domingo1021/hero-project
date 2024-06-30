@@ -4,13 +4,10 @@ import { Hero, HeroRepository } from '#hero/dto';
 
 @Injectable()
 export class HeroService {
-  constructor(
-    @Inject('HeroRepository') private readonly heroRepo: HeroRepository,
-  ) {}
+  constructor(@Inject('HeroRepository') private readonly heroRepo: HeroRepository) {}
 
   /**
-   * @description Get all heroes
-   * @implements Get all heroes with profile if authenticated, otherwise get all heroes only
+   * @description Get all heroes with profile if authenticated, otherwise get all heroes only
    * @param {boolean} isAuthenticated - Flag to determine if hero profile should be fetched
    * @returns {Promise<Array<Hero>>}
    * @throws {InternalServerErrorException}
@@ -22,8 +19,7 @@ export class HeroService {
   }
 
   /**
-   * @description Get single heroes
-   * @implements Get single heroes with profile if authenticated, otherwise get single heroes only
+   * @description Get single heroes with profile if authenticated, otherwise get single heroes only
    * @param {string} id - Hero ID
    * @param {boolean} isAuthenticated - Flag to determine if hero profile should be fetched
    * @returns {Promise<Array<Hero>>}

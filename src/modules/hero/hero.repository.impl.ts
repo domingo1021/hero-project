@@ -17,7 +17,7 @@ export class HeroRepositoryImpl implements HeroRepository {
   ) {}
 
   /**
-   * @description Get all heroes with read-through strategy. Get cache first, if not exist, fetch from external API.
+   * @description Get all heroes in cache-aside strategy: get cache first, if not exist, fetch from external API.
    * @returns {Promise<Array<Hero>>}
    * @throws {InternalServerErrorException}
    */
@@ -34,8 +34,7 @@ export class HeroRepositoryImpl implements HeroRepository {
   }
 
   /**
-   * @description Get all heroes in read-through strategy.
-   * @implements Get cache first, if not exist, fetch from external API.
+   * @description Get all heroes in cache-aside strategy: get cache first, if not exist, fetch from external API.
    * @returns {Promise<Array<Hero>>}
    * @throws {InternalServerErrorException}
    */
@@ -58,8 +57,7 @@ export class HeroRepositoryImpl implements HeroRepository {
   }
 
   /**
-   * @description Get single hero in read-through strategy.
-   * @implements Get cache first, if not exist, fetch from external API.
+   * @description Get single hero in cache-aside strategy: get cache first, if not exist, fetch from external API.
    * @returns {Promise<Array<Hero>>}
    * @throws {InternalServerErrorException}
    */
@@ -77,8 +75,7 @@ export class HeroRepositoryImpl implements HeroRepository {
   }
 
   /**
-   * @description Get single hero with profile in read-through strategy.
-   * @implements Get cache first, if not exist, fetch from external API.
+   * @description Get single hero with profile in cache-aside strategy: get cache first, if not exist, fetch from external API.
    * @returns {Promise<Array<Hero>>}
    * @throws {InternalServerErrorException}
    */
