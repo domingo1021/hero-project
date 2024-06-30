@@ -3,6 +3,8 @@ import { Injectable, Inject, OnModuleDestroy } from '@nestjs/common';
 
 import { Cache } from 'cache-manager';
 
+import { WrapCacheErrors } from '#cores/decorators/cacheError.decorator';
+
 @Injectable()
 export class CacheService implements OnModuleDestroy {
   constructor(@Inject(CACHE_MANAGER) private cacheManager: Cache) {}
@@ -13,6 +15,7 @@ export class CacheService implements OnModuleDestroy {
    * @param {string} key - The key of the value to retrieve.
    * @returns {Promise<T | null>} The cached value, or null if the value is not in the cache.
    */
+  @WrapCacheErrors()
   async get<T>(key: string): Promise<T | null> {
     const cachedValue = await this.cacheManager.get<T>(key);
     if (!cachedValue) return null;
@@ -26,6 +29,7 @@ export class CacheService implements OnModuleDestroy {
    * @param ttl the time to live in seconds, default is until 4:00 AM next day
    * @returns {Promise<void>}
    */
+  @WrapCacheErrors()
   async set(key: string, value: any, ttl: number = -1): Promise<void> {
     if (ttl === -1) {
       const now = new Date();
