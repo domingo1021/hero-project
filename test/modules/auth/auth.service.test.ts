@@ -1,9 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
 
+import * as bcrypt from 'bcrypt';
+
 import { CacheService } from '#cache/cache.service';
 import { ExternalHttpService } from '#http/http.service';
 import { AuthService } from '#auth/auth.service';
-import * as bcrypt from 'bcrypt';
 
 jest.mock('bcrypt');
 

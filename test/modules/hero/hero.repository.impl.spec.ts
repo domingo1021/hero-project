@@ -1,5 +1,4 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { InternalServerErrorException } from '@nestjs/common';
 
 import { CacheService } from '#cache/cache.service';
 import { ExternalHttpService } from '#http/http.service';
