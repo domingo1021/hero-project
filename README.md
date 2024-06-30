@@ -21,10 +21,9 @@
 
 ### Start with Docker Compose
 
-Docker compose will run multiple containers and start app after dependencies get ready.
+Docker compose will run containers and start app after dependencies get ready.
 
 - [x] Redis
-- [x] Vault
 - [x] Hero-app (NestJS application)
 
 ```
@@ -72,7 +71,7 @@ $ npm run test
 
 ```
 .
-├── config                  Local config for vault
+├── config                  Local config files
 ├── logs                    Logs folder for winston (Node.js logger)
 ├── scripts                 Utility scripts (e.g., K6 load test)
 ├── src                     Source code
@@ -107,12 +106,11 @@ $ npm run test
 1. `TypeScript` as **programming language**, which is a superset of JS, and also using **Node.js** as runtime.
 2. `NestJS` as **backend framework**, and using express as internal library implementation.
 3. `Redis` as **Cache**, helps us store data from external API
-4. `Vault` as **Secret Manager**, stores Environment variable or Secrets
-5. `Docker` as **Container Platform**, helps to containerize application.
-6. `Github Actions` as **Continuous Integration** tool, runs test every time PR is created or when code is merged into **main** branch.
-7. `ESList` as **JavaScript Linter**
-8. `Prettier` as **JavaScript Formatter**
-9. `Husky` as **git hooks** to make sure code quality with **pre-commit** and **pre-push** scripts.
+4. `Docker` as **Container Platform**, helps to containerize application.
+5. `Github Actions` as **Continuous Integration** tool, runs test every time PR is created or when code is merged into **main** branch.
+6. `ESList` as **JavaScript Linter**
+7. `Prettier` as **JavaScript Formatter**
+8. `Husky` as **git hooks** to make sure code quality with **pre-commit** and **pre-push** scripts.
 
 ### Library
 
