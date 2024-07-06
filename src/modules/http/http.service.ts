@@ -49,7 +49,7 @@ export class ExternalHttpService {
 
   /**
    * @description Get single hero from external api, throw if response is in invalid format / network error.
-   * @returns {Promise<Array<Hero>>}
+   * @returns {Promise<Hero>}
    * @throws {InternalServerErrorException}
    */
   async getHeroById(id: string): Promise<Hero> {
@@ -84,7 +84,7 @@ export class ExternalHttpService {
 
   /**
    * @description Get single hero profile, throw if response is in invalid format / network error.
-   * @returns {Promise<Array<HeroProfile>>}
+   * @returns {Promise<HeroProfile>}
    * @throws {InternalServerErrorException}
    */
   async getHeroProfileById(id: string): Promise<HeroProfile> {

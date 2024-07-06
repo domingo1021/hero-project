@@ -22,7 +22,7 @@ export class HeroService {
    * @description Get single heroes with profile if authenticated, otherwise get single heroes only
    * @param {string} id - Hero ID
    * @param {boolean} isAuthenticated - Flag to determine if hero profile should be fetched
-   * @returns {Promise<Array<Hero>>}
+   * @returns {Promise<Hero>}
    * @throws {InternalServerErrorException}
    */
   async findById(id: string, isAuthenticated: boolean = false): Promise<Hero> {
