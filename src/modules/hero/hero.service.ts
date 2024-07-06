@@ -10,6 +10,7 @@ export class HeroService {
    * @description Get all heroes with profile if authenticated, otherwise get all heroes only
    * @param {boolean} isAuthenticated - Flag to determine if hero profile should be fetched
    * @returns {Promise<Array<Hero>>}
+   * @throws {NotFoundException}
    * @throws {InternalServerErrorException}
    */
   async findAll(isAuthenticated: boolean = false): Promise<Array<Hero>> {
@@ -23,6 +24,7 @@ export class HeroService {
    * @param {string} id - Hero ID
    * @param {boolean} isAuthenticated - Flag to determine if hero profile should be fetched
    * @returns {Promise<Hero>}
+   * @throws {NotFoundException}
    * @throws {InternalServerErrorException}
    */
   async findById(id: string, isAuthenticated: boolean = false): Promise<Hero> {

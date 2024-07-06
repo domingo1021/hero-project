@@ -36,6 +36,7 @@ export class HeroRepositoryImpl implements HeroRepository {
   /**
    * @description Get all heroes in cache-aside strategy: get cache first, if not exist, fetch from external API.
    * @returns {Promise<Array<Hero>>}
+   * @throws {NotFoundException}
    * @throws {InternalServerErrorException}
    */
   async getAllHeroesWithProfile(): Promise<Array<Hero>> {
@@ -59,6 +60,7 @@ export class HeroRepositoryImpl implements HeroRepository {
   /**
    * @description Get single hero in cache-aside strategy: get cache first, if not exist, fetch from external API.
    * @returns {Promise<Hero>}
+   * @throws {NotFoundException}
    * @throws {InternalServerErrorException}
    */
   async getHeroById(id: string): Promise<Hero> {
@@ -77,6 +79,7 @@ export class HeroRepositoryImpl implements HeroRepository {
   /**
    * @description Get single hero with profile in cache-aside strategy: get cache first, if not exist, fetch from external API.
    * @returns {Promise<Hero>}
+   * @throws {NotFoundException}
    * @throws {InternalServerErrorException}
    */
   async getHeroWithProfileById(id: string): Promise<Hero> {
