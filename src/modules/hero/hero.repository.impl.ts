@@ -83,7 +83,7 @@ export class HeroRepositoryImpl implements HeroRepository {
    * @throws {InternalServerErrorException}
    */
   async getHeroWithProfileById(id: string): Promise<Hero> {
-    const key = `${this.GET_HERO_WITH_PROFILE_BY_ID_KEY}${id}   `;
+    const key = `${this.GET_HERO_WITH_PROFILE_BY_ID_KEY}${id}`;
     const cachedHero = await this.cacheService.get<string>(key);
     if (cachedHero) {
       return JSON.parse(cachedHero);
